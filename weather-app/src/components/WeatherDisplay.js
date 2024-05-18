@@ -35,36 +35,41 @@ const WeatherDisplay = ({ coordinates }) => {
     }
   }, [coordinates]);
 
+  const getIconUrl = (iconCode) => `http://openweathermap.org/img/wn/${iconCode}@2x.png`;
+
   return (
-    <div>
+    <div className="weather-container">
       {weather ? (
-        <div>
+        <div className="weather-section">
           <h2>Current Weather in {weather.name}</h2>
           <p>{weather.weather[0].description}</p>
           <p>{Math.round(weather.main.temp - 273.15)}°C</p>
+          <img src={getIconUrl(weather.weather[0].icon)} alt={weather.weather[0].description} />
         </div>
       ) : (
         <p>Loading current weather...</p>
       )}
       {hourly && (
-        <div>
+        <div className="weather-section">
           <h2>Hourly Forecast</h2>
           <ul>
             {hourly.list.slice(0, 24).map((item, index) => (
               <li key={index}>
                 {new Date(item.dt * 1000).toLocaleTimeString()}: {item.weather[0].description}, {Math.round(item.main.temp - 273.15)}°C
+                <img src={getIconUrl(item.weather[0].icon)} alt={item.weather[0].description} />
               </li>
             ))}
           </ul>
         </div>
       )}
       {daily && (
-        <div>
+        <div className="weather-section">
           <h2>Daily Forecast</h2>
           <ul>
             {daily.list.map((item, index) => (
               <li key={index}>
                 {new Date(item.dt * 1000).toLocaleDateString()}: {item.weather[0].description}, {Math.round(item.temp.day - 273.15)}°C
+                <img src={getIconUrl(item.weather[0].icon)} alt={item.weather[0].description} />
               </li>
             ))}
           </ul>
